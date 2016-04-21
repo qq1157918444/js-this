@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>作为对象方法的调用</title>
+</head>
+<body>
+
+<p>请打开浏览器的控制器查看console来查看结果</p>
+
+<script>
+    console.log("***作为对象方法的调用 start***");
+    function example(){
+        //console.log("x:",x)会报错
+        console.log("this.x:",this.x)
+        console.log("window.x:",window.x)
+    }
+    var Obj = {};
+    Obj.x = 1;
+    Obj.m_example = example;
+    //Obj.m_example = example();//输出结果是undefined
+    Obj.m_example();
+    console.log("***作为对象方法的调用 end***");
+</script>
+
+</body>
+</html>

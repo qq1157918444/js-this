@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>apply调用</title>
+</head>
+<body>
+
+<p>请打开浏览器的控制器查看console来查看结果</p>
+
+<script>
+    console.log("***apply调用 start***");
+    var x = 1;
+    function example(){
+        console.log(this.x)
+    }
+    function test(){
+        var y = 1;
+        console.log(y)
+        console.log(this.y)
+        console.log(this.x)
+    }
+    var obj = {};
+    obj.x = 2;
+    obj.m_example = example;
+    obj.m_example();
+    obj.m_example.apply();
+    obj.m_example.apply(this);
+    obj.m_example.apply(window);
+
+    var obj1 = {};
+    var obj2 = {};
+    obj1.x = 3;
+    obj2.x = 4;
+    obj1.say = example;
+    obj2.say = test;
+    obj1.say();
+    obj2.say();
+    obj1.say.apply();
+    obj1.say.apply(obj1);
+    obj1.say.apply(obj2);
+    console.log("***apply调用 end***");
+</script>
+
+</body>
+</html>

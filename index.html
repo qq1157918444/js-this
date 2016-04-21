@@ -1,0 +1,405 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>js中this的用法</title>
+</head>
+<body>
+
+    <h1>一：什么是this？</h1>
+
+    <p>this是javascript中的一个关键字。</p>
+    <p>当函数运行，this代表其内部自动生成的一个内部对象，只能在其内部使用。</p>
+    <p>在ECMAScript中，只有俩种执行环境，全局环境以及函数环境，每一个函数都是一个执行环境，包括嵌套函数,嵌套函数也是一个执行环境</p>
+    <p>函数的使用场景不同，即函数的执行环境不同，this的值会发生变化，但是this始终指向调用函数的那个对象</p>
+    <p>小知识：一个变量在函数内定义，只能在该函数内部访问，函数外部是不能访问该变量的，不过在for循环以及其他大括号中定义的变量，在外部是可以可以访问的</p>
+
+    <h1>二：为什么要使用this？</h1>
+
+    <p>this类似于自然语言中的代词，比如“毛主席是中华人民共和国的创造者，他是中华人民共和国主席，他是伟大的”，
+        在这句话中的“他”就类似于我们代码中的this，如果不用this，直接使用对象也是可以的，上句话中，如果不用“他”，
+        修改为“毛主席是中华人民共和国的创造者，毛主席是中华人民共和国主席，毛主席是伟大的”，会觉得很怪，同样，在程序中，我们也是用this指向对象，而不会直接使用对象</p>
+
+    <h1>三：this的使用</h1>
+
+    <h2>以下所有示例都是通过控制台演示</h2>
+
+    <h3>1：全局函数调用</h3>
+    <p>this代表全局对象global,如果实在浏览器中，this就是代表window</p>
+    <p>执行下面代码都会输出1</p>
+    <pre>
+        function example(){
+            this.x  = 1;
+            console.log(x);=>>1
+            console.log(this.x);=>>1
+            console.log(window.x);=>>1
+        }
+        example();
+    </pre>
+    <a href="./demo1.html">示例</a>
+    <p>把this.x赋值写在函数外面</p>
+    <p>执行下面代码都会输出1，说明this指向window</p>
+    <pre>
+        this.x = 1;
+        function example(){
+            console.log(x);=>>1
+            console.log(this.x);=>>1
+            console.log(window.x);=>>1
+        }
+        example();
+    </pre>
+    <a href="./demo2.html">示例</a>
+
+    <h3>2：作为对象方法的调用</h3>
+    <p>函数作为某一个对象的方法调用，this就是指这个对象</p>
+    <p>执行下面代码不同点</p>
+    <pre>
+        function example(){
+            //console.log("x:"x)=>>会报错
+            console.log(this.x)=>>1
+            console.log(window.x)=>>undefined
+        }
+        var Obj = {};
+        Obj.x = 1;
+        Obj.m_example = example;//引用：this指向Obj
+        Obj.m_example();
+    </pre>
+    <a href="./demo3.html">示例</a>
+
+    <h3>3：作为构造函数调用</h3>
+    <p>所谓构造函数就是可以通过new这个构造函数来生成一个新对象，这时候，this指向该新对象</p>
+    <p>执行下面代码</p>
+    <pre>
+        var x = 2;
+        function Example(){
+            this.x = 1;
+        }
+        var example = new Example();
+        console.log(example.x);=>>1
+        console.log(x);=>>2
+        console.log(this.x);=>>2
+        console.log(window.x);=>>2
+    </pre>
+    <a href="./demo4.html">示例</a>
+
+    <h3>4：apply调用</h3>
+    <p>apply()是函数对象的一个方法，它的作用是改变函数的调用对象，它的第一个参数就表示改变后的调用这个函数的对象。
+        因此，this指的就是这第一个参数。apply()的参数为空，调用全局对象，this指向全局对象window</p>
+    <p>执行下面代码</p>
+    <pre>
+        var x = 1;
+        function example(){
+            console.log(this.x)
+        }
+        function test(){
+            var y = 1;
+            console.log(y)
+            console.log(this.y)
+            console.log(this.x)
+        }
+        var obj = {};
+        obj.x = 2;
+        obj.m_example = example;
+        obj.m_example();=>>2
+        obj.m_example.apply();=>>1
+        obj.m_example.apply(this);=>>1
+        obj.m_example.apply(window);=>>1
+
+        var obj1 = {};
+        var obj2 = {};
+        obj1.x = 3;
+        obj2.x = 4;
+        obj1.say = example;
+        obj2.say = test;
+        obj1.say();=>>3
+        obj2.say();=>>1.undefined,4
+        obj1.say.apply();=>>1
+        obj1.say.apply(obj1);=>>3
+        obj1.say.apply(obj2);=>>4
+    </pre>
+    <a href="./demo5.html">示例</a>
+
+    <h3>5:setTimeout中this的使用</h3>
+    <p></p>
+    <pre>
+        var obj = {
+            x:1,
+            run:function(){
+                var that  = this
+                setTimeout(function(){
+                    console.log(that.x)=>>1
+                    console.log(this.x)=>>1
+                }.bind(this),1000);
+            }
+        };
+        obj.run();
+    </pre>
+    <a href="./demo6.html">示例</a>
+
+
+    <h3>6:javascript中onclick(this)的用法介绍</h3>
+    <p></p>
+    <pre>
+        function example(obj){
+            console.log(obj);=>>input
+            console.log(obj.type);=>>test
+            console.log(obj.name);=>>test
+            console.log(obj.id);=>>test
+            console.log(obj.value);=>>javascript中onclick中的this
+        }
+    </pre>
+    <a href="./demo7.html">示例</a>
+
+    <h3>7:函数的引用和拷贝</h3>
+    <p>引用：this指向引用的对象，拷贝：this指向拷贝的对象</p>
+    <p>执行下面代码</p>
+    <pre>
+        &lt;div id="test1">test1&lt;/div>
+        &lt;div id="test2">test2&lt;/div>
+        &lt;div id="test3" onclick="test1()">test3&lt;/div>
+        &lt;div id="test4" onclick="test1">test4&lt;/div>//没有反应
+        &lt;div id="test5" onclick="test2(this)">test5&lt;/div>//test5
+
+        function test1(){
+            console.log(this.id);
+        }
+        function test2(obj){
+            console.log(obj.id);
+        }
+        console.log(window.test1);//test1 fun
+        test1();//undefined
+        var dom1 = document.getElementById("test1");
+        var dom2 = document.getElementById("test2");
+        window.onload = function(){
+            dom1.onclick = test1;//test1
+            dom2.onclick = function(){test1();}//undefined
+        }
+    </pre>
+    <a href="./demo8.html">示例</a>
+
+    <h3>8:attachEvent和addEventListener</h3>
+    <p>attachEvent是ie10以下中绑定事件的方法，会把相应函数拷贝到全局（window），
+        但在dom标准中，addEventListener（chrome，ie11）绑定的事件拷贝的函数为事件所绑定的对象</p>
+    <p>执行下面代码</p>
+    <pre>
+        &lt;div id="test1">test1&lt;/div>
+        &lt;div id="test2">test2&lt;/div>
+
+        function test(){
+            console.log(this.id);
+            console.log(this == window);
+        }
+        window.onload = function(){
+            var dom1 = document.getElementById("test1");
+            if(dom1.attachEvent){
+                dom1.attachEvent("onclick",test)
+                dom1.appendChild(document.createTextNode("attachEvent"));
+            }else if(dom1.addEventListener){
+                dom1.addEventListener("click",test,false)//test1,false
+                dom1.appendChild(document.createTextNode("addEventListener"));
+            }else{
+                dom1.onclick = test;
+            }
+        };
+        var obj = new Object();
+        obj.color = "black";
+        obj.showColor = function(){
+            console.log(this.color);
+            console.log(this == window);
+        };
+        obj.showColor(); //black,undefined
+        var dom2 = document.getElementById("test2");
+        if(dom2.attachEvent){
+            dom2.attachEvent("onclick",obj.showColor);
+            dom2.appendChild(document.createTextNode("attachEvent"));
+        }else if(dom2.addEventListener){
+            dom2.addEventListener("click",obj.showColor,false)//undefined,false
+            dom2.appendChild(document.createTextNode("addEventListener"));
+        }else{
+            dom2.onclick = obj.showColor;
+        }
+    </pre>
+    <a href="./demo9.html">示例</a>
+
+    <h3>9:关于对象冒充的继承方式</h3>
+    <p>执行下面代码</p>
+    <pre>
+        &lt;div id="test">test&lt;/div>
+        console.log("***关于对象冒充的继承方式 start***");
+
+        function test(){
+            console.log(this.id);
+            console.log(this == window);
+        }
+        window.onload = function(){
+            var dom = document.getElementById("test");
+            dom.onclick = test;//test,false
+            dom.m_click = test;
+            dom.m_click();//test,false
+        };
+        function Test1(sColor){
+            this.color = sColor;
+            this.sayColor = function(){
+                console.log(this.color);
+            }
+        }
+
+        function Test2(sColor,sName){
+            this._sayColor = Test1;
+            this._sayColor(sColor);
+            console.log(this._sayColor)//test1 fun
+            delete this._sayColor;
+
+            this.name = sName;
+            this.sayName = function(){
+                console.log(this.name);
+            }
+        }
+
+        var test2 = new Test2("color of test2","name of test2");
+        test2.sayColor();//color of test2
+        test2.sayName();//name of test2
+        输出：
+        function Test1(sColor){
+            this.color = sColor;
+            this.sayColor = function(){
+                console.log(this.color);
+            }
+        }
+        color of test2
+        name of test2
+        test
+        false
+    </pre>
+    <a href="./demo10.html">示例</a>
+
+    <h3>10:当this被用作回调函数传入其他方法</h3>
+    <p>执行下面代码</p>
+    <pre>
+        var user = {
+        data: [
+            {
+                name: "张三",
+                age: 20
+            },
+            {
+                name: "李四",
+                age: 30
+            }
+        ],
+        clickHandler: function(event) {
+            var randomNum = ((Math.random() * 2 | 0) + 1) - 1; // 随机返回0或1
+            //下面这行代码会从数组data里随机打印姓名和年龄
+            console.log(this.data[randomNum].name + " " + this.data[randomNum].age);
+        }
+    }
+    $("button").click(user.clickHandler.bind(user));=>>李四 30 or 张三 20
+    </pre>
+    <a href="./demo11.html">示例</a>
+
+    <h3>11:闭包中的this</h3>
+    <p>执行下面代码</p>
+    <pre>
+        var user = {
+            role: "学生",
+            data: [
+                {
+                    name: "张三",
+                    age: 20
+                },
+                {
+                    name: "李四",
+                    age: 30
+                }
+            ],
+            clickHandler: function(event) {
+                //为了捕获this指向user对象时的值，我们把它赋值给另外一个变量theUserObj，后面我们可以使用theUserObj
+                var theUserObj = this;
+                this.data.forEach(function(person) {
+                    //现在我们不用this.tournament了，我们用theUserObj.tournament
+                    console.log(person.name + " 是一个 " + theUserObj.role);
+                })
+            }
+        }
+        user.clickHandler();=>>张三 是一个 学生  and 张三 是一个 学生
+    </pre>
+    <a href="./demo12.html">示例</a>
+
+    <h3>12:方法被赋值给某个变量</h3>
+    <p>执行下面代码</p>
+    <pre>
+        var g_data = {
+            data:[
+                {
+                    name:"g_zyb1",
+                    age:"12"
+                },
+                {
+                    name:"g_zyb2",
+                    age:"13"
+                }
+            ]
+        };
+        var user = {
+            data : [
+                {
+                    name:"zyb3",
+                    age:"14"
+                },
+                {
+                    name:"zyb4",
+                    age:"15"
+                }
+            ],
+            showDate:function(event){
+                var randomNum = ((Math.random() * 2 | 0) + 1) - 1; // 随机生成1或0
+                //这句话会从数组data里随机显示人名和岁数
+                console.log(this.data[randomNum].name + " : " + this.data[randomNum].age);
+            }
+        };
+        var showUserDate = user.showDate.bind(user);
+        var showGlobalDate = user.showDate.bind(g_data);
+        showUserDate();//zyb3:14  or zyb4:15
+        showGlobalDate();//g_zyb1:12  or g_zyb2:13
+    </pre>
+    <a href="./demo13.html">示例</a>
+
+    <h3>13:借用方法带来的问题</h3>
+    <p>执行下面代码</p>
+    <pre>
+        var gameController = {
+            scores : [23,24,34,54],
+            avgScore:null,
+            players:[
+                {
+                    name:"张三",
+                    age:23,
+                    id:1
+                },
+                {
+                    name:"李四",
+                    age:24,
+                    id:2
+                }
+            ]
+        };
+        var appController = {
+            scores : [239,234,344,554],
+            avgScore:null,
+            avg:function(){
+                var sumOfScores = this.scores.reduce(function(prev, cur, index, array) {
+                    return prev + cur;
+                });
+                this.avgScore = sumOfScores / this.scores.length;
+            }
+        };
+        //gameController.avgScore = appController.avg();
+        appController.avg.apply(gameController);
+        appController.avg.apply(gameController,gameController.scores);
+        console.log(gameController.avgScore)=>>33.75
+        console.log(appController.avgScore)=>>null
+    </pre>
+    <a href="./demo14.html">示例</a>
+
+</body>
+</html>

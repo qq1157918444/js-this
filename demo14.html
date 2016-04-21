@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>借用方法带来的问题</title>
+</head>
+<body>
+
+<p>请打开浏览器的控制器查看console来查看结果</p>
+
+<script>
+    console.log("***借用方法带来的问题  start***");
+    var gameController = {
+        scores : [23,24,34,54],
+        avgScore:null,
+        players:[
+            {
+                name:"张三",
+                age:23,
+                id:1
+            },
+            {
+                name:"李四",
+                age:24,
+                id:2
+            }
+        ]
+    };
+    var appController = {
+        scores : [239,234,344,554],
+        avgScore:null,
+        avg:function(){
+            var sumOfScores = this.scores.reduce(function(prev, cur, index, array) {
+                return prev + cur;
+            });
+            this.avgScore = sumOfScores / this.scores.length;
+        }
+    };
+    //gameController.avgScore = appController.avg();
+    appController.avg.apply(gameController);
+    appController.avg.apply(gameController,gameController.scores);
+    console.log(gameController.avgScore)
+    console.log(appController.avgScore)
+
+    console.log("***借用方法带来的问题  end***");
+</script>
+
+</body>
+</html>

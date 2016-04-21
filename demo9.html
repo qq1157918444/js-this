@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>attachEvent和addEventListener</title>
+</head>
+<body>
+
+<p>请打开浏览器的控制器查看console来查看结果</p>
+<div id="test1">test1</div>
+<div id="test2">test2</div>
+<script>
+    console.log("***attachEvent和addEventListener start***");
+
+    function test(){
+        console.log(this.id);
+        console.log(this == window);
+    }
+    window.onload = function(){
+        var dom1 = document.getElementById("test1");
+        if(dom1.attachEvent){
+            dom1.attachEvent("onclick",test)
+            dom1.appendChild(document.createTextNode("attachEvent"));
+        }else if(dom1.addEventListener){
+            dom1.addEventListener("click",test,false)
+            dom1.appendChild(document.createTextNode("addEventListener"));
+        }else{
+            dom1.onclick = test;
+        }
+    };
+    var obj = new Object();
+    obj.color = "black";
+    obj.showColor = function(){
+        console.log(this.color);
+        console.log(this == window);
+    };
+    obj.showColor();
+    var dom2 = document.getElementById("test2");
+    if(dom2.attachEvent){
+        dom2.attachEvent("onclick",obj.showColor);
+        dom2.appendChild(document.createTextNode("attachEvent"));
+    }else if(dom2.addEventListener){
+        dom2.addEventListener("click",obj.showColor,false)
+        dom2.appendChild(document.createTextNode("addEventListener"));
+    }else{
+        dom2.onclick = obj.showColor;
+    }
+
+    console.log("***attachEvent和addEventListener end***");
+</script>
+
+</body>
+</html>

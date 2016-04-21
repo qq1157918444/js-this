@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>关于对象冒充的继承方式</title>
+</head>
+<body>
+
+<p>请打开浏览器的控制器查看console来查看结果</p>
+<div id="test">test</div>
+<script>
+    console.log("***关于对象冒充的继承方式 start***");
+
+    function test(){
+        console.log(this.id);
+        console.log(this == window);
+    }
+    window.onload = function(){
+        var dom = document.getElementById("test");
+        dom.onclick = test;//test,false
+        dom.m_click = test;
+        dom.m_click();//test,false
+    };
+    function Test1(sColor){
+        this.color = sColor;
+        this.sayColor = function(){
+            console.log(this.color);
+        }
+    }
+
+    function Test2(sColor,sName){
+        this._sayColor = Test1;
+        this._sayColor(sColor);
+        console.log(this._sayColor)//test1 fun
+        delete this._sayColor;
+
+        this.name = sName;
+        this.sayName = function(){
+            console.log(this.name);
+        }
+    }
+
+    var test2 = new Test2("color of test2","name of test2");
+    test2.sayColor();//color of test2
+    test2.sayName();//name of test2
+    console.log("***关于对象冒充的继承方式 end***");
+</script>
+
+</body>
+</html>

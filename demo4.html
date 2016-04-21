@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>作为构造函数调用</title>
+</head>
+<body>
+
+<p>请打开浏览器的控制器查看console来查看结果</p>
+
+<script>
+    console.log("***作为构造函数调用 start***");
+    var x = 2;
+    function Example(){
+        this.x = 1;
+    }
+    var example = new Example();
+    console.log(example.x);
+    console.log(x);
+    console.log(this.x);
+    console.log(window.x);
+    console.log("***作为构造函数调用 end***");
+</script>
+
+</body>
+</html>

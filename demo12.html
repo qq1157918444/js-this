@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>闭包中的this</title>
+</head>
+<body>
+
+<p>请打开浏览器的控制器查看console来查看结果</p>
+<script>
+    console.log("***闭包中的this start***");
+    var user = {
+        role: "学生",
+        data: [
+            {
+                name: "张三",
+                age: 20
+            },
+            {
+                name: "李四",
+                age: 30
+            }
+        ],
+        clickHandler: function(event) {
+            //为了捕获this指向user对象时的值，我们把它赋值给另外一个变量theUserObj，后面我们可以使用theUserObj
+            var theUserObj = this;
+            this.data.forEach(function(person) {
+                //现在我们不用this.tournament了，我们用theUserObj.tournament
+                console.log(person.name + " 是一个 " + theUserObj.role);
+            })
+        }
+    }
+
+    user.clickHandler();
+    console.log("***闭包中的this end***");
+</script>
+
+</body>
+</html>

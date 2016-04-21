@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>javascript中onclick(this)的用法介绍</title>
+</head>
+<body>
+
+<p>请打开浏览器的控制器查看console来查看结果</p>
+<input type="text" id="test" name="test" value="javascript中onclick中的this" onclick="javascript:example(this)">
+<script>
+    console.log("***javascript中onclick(this)的用法介绍 start***");
+
+    function example(obj){
+        console.log(obj);
+        console.log(obj.type);
+        console.log(obj.name);
+        console.log(obj.id);
+        console.log(obj.value);
+    }
+
+    console.log("***javascript中onclick(this)的用法介绍 end***");
+</script>
+
+</body>
+</html>

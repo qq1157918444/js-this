@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>setTimeout中this的使用</title>
+</head>
+<body>
+
+<p>请打开浏览器的控制器查看console来查看结果</p>
+
+<script>
+    console.log("***setTimeout中this的使用 start***");
+
+    var obj = {
+        x:1,
+        run:function(){
+            var that  = this
+            setTimeout(function(){
+                console.log(that.x)
+                console.log(this.x)
+            }.bind(this),1000);
+        }
+    };
+    obj.run();
+
+    console.log("***setTimeout中this的使用 end***");
+</script>
+
+</body>
+</html>

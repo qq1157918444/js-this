@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>js中this的用法</title>
+</head>
+<body>
+<p>this是javascript中的一个关键字，代表函数运行时，其内部自动生成的一个内部对象，只能在函数内部使用</p>
+<p>随着函数的使用场景不同，this的值会发生变化，但是this始终指向调用函数的那个对象</p>
+<p>在ECMAScript中，只有俩种执行环境，全局环境以及函数环境，每一个函数都是一个执行环境，包括嵌套函数</p>
+<p>在for循环以及其他大括号中定义的变量，在外部都来可以访问</p>
+<h1>一：this的使用</h1>
+<h2>以下所有示例都是通过控制台演示</h2>
+<h4>1:纯粹的函数调用</h4>
+<p>属于全局调用。this代表全局对象global</p>
+<script>
+    console.log("***test1 start***");
+    function test1(){
+        this.test_1  = "test1";
+        console.log(test_1);
+        console.log(this.test_1);
+        console.log(window.test_1);
+    }
+    test1();
+    console.log("***test1 end***");
+    console.log("***test2 start***");
+    this.test_2  = "test2";
+    function test2(){
+        console.log(test_2);
+        console.log(this.test_2);
+        console.log(window.test_2);
+    }
+    test2();
+    console.log("***test2 end***");
+</script>
+<h4>2:作为对象方法的调用</h4>
+<p>函数作为某一个对象的方法调用，this就是指这个对象</p>
+<script>
+    console.log("***test3 start***");
+    function test3(){
+        console.log(this.test_3);
+        console.log(window.test_3);
+    }
+    var test3Obj = {};
+    test3Obj.test_3 = "test3";
+    test3Obj.m_test3 = test3;
+    test3Obj.m_test3();
+    console.log("***test3 end***");
+</script>
+<h4>3:作为构造函数调用</h4>
+<p>所谓构造函数就是可以通过new这个构造函数来生成一个新对象，这时候，this指向该新对象</p>
+<script>
+    console.log("***test4 start***");
+    function Test4(){
+        this.test_4 = "test4";
+    }
+    var test4 = new Test4();
+    console.log(test4.test_4);
+    console.log(window.test_4);
+    console.log("***test4 end***");
+    console.log("***test5 start***");
+    var test_5 = "test5g"
+    function Test5(){
+        this.test_5 = "test5";
+    }
+    var test5 = new Test5();
+    console.log(test_5);
+    console.log(this.test_5);
+    console.log(test5.test_5);
+    console.log(window.test_5);
+    console.log("***test5 end***");
+</script>
+
+<h4>4:apply调用</h4>
+<p>apply()是函数对象的一个方法,它的作用是改变函数的调用方法，它的第一个参数就是改变后的调用这个函数的对象，因此，这个this‘就是指向第一个参数
+    apply()的参数为空，调用全局对象，this指向全局对象window
+</p>
+<script>
+    console.log("***test6 start***");
+    var test_6 = "test6g";
+
+    function test6(){
+        console.log(this.test_6)
+    }
+    function test7(){
+        var test_7 = "test7g";
+        console.log(this.test_7)
+    }
+    var test6Obj = {};
+    test6Obj.test_6 = "test6";
+    test6Obj.m_test6 = test6;
+    var test7Obj = {};
+    test7Obj.test_6 = "test7";
+    test7Obj.m_test6 = test7;
+    test6Obj.m_test6();
+    test6Obj.m_test6.apply(test6Obj);
+    test6Obj.m_test6.apply();
+    test6Obj.m_test6.apply(test7Obj);
+    console.log("***test6 end***");
+</script>
+<h4>5:javascript中onclick(this)的用法介绍</h4>
+<input type="text" id="test8" name="test8" value="javascript中onclick中的this" onclick="javascript:test8(this)">
+<script>
+    console.log("***test8 start***");
+    function test8(obj){
+        console.log(obj);
+        console.log(obj.type);
+        console.log(obj.name);
+        console.log(obj.id);
+        console.log(obj.value);
+    }
+    console.log("***test8 end***");
+    console.log("***test9 start***");
+    for(var i = 0; i < 2 ; i++){
+        var test9 ="test9";
+    }
+    console.log(test9);
+    console.log("***test9 end***");
+    console.log("***test10 start***");
+    try {
+        var test10 = 20; // 在try语句中声明的变量
+        a = b; // 引起一个异常
+    } catch(e) {
+        console.log(test10); // 在catch语句中调用变量，将得到20
+    } finally {
+        console.log(test10); // 在finally语句中调用变量，将得到20
+    }
+    console.log(test10);
+    console.log("***test10 end***");
+</script>
+<h4>6:call与apply</h4>
+<p id="js_test11">测试字体</p>
+<p id="js_test12">测试字体</p>
+<script>
+    console.log("***test11 start***");
+    function test11(type,value){
+        this.style[type] = value
+    }
+    var test11doc = document.getElementById("js_test11");
+    var test12doc = document.getElementById("js_test12");
+    test11.call(test11doc,"fontSize","50px");
+    test11.apply(test12doc,["fontSize","100px"]);
+    console.log("***test11 end***");
+</script>
+<h4>7:setTimeout</h4>
+<script>
+    console.log("***test12 start***");
+/*
+    var test12 = "test12"
+*/
+    var test12Obj = {
+        test12:100,
+        m_test12:function(){
+            var _this = this;
+            setTimeout(function(){
+                console.log(_this.test12)//this指向window
+                console.log(this.test12)//this指向window
+            }.bind(this),300)
+        }
+    };
+    test12Obj.m_test12();
+    console.log("***test12 end***");
+</script>
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>方法被赋值给某个变量</title>
+</head>
+<body>
+
+<p>请打开浏览器的控制器查看console来查看结果</p>
+<script>
+    console.log("***方法被赋值给某个变量  start***");
+
+    var g_data = {
+        data:[
+            {
+                name:"g_zyb1",
+                age:"12"
+            },
+            {
+                name:"g_zyb2",
+                age:"13"
+            }
+        ]
+    };
+    var user = {
+        data : [
+            {
+                name:"zyb3",
+                age:"14"
+            },
+            {
+                name:"zyb4",
+                age:"15"
+            }
+        ],
+        showDate:function(event){
+            var randomNum = ((Math.random() * 2 | 0) + 1) - 1; // 随机生成1或0
+            //这句话会从数组data里随机显示人名和岁数
+            console.log(this.data[randomNum].name + " : " + this.data[randomNum].age);
+        }
+    };
+    var showUserDate = user.showDate.bind(user);
+    var showGlobalDate = user.showDate.bind(g_data);
+    showUserDate();
+    showGlobalDate();
+
+    console.log("***方法被赋值给某个变量  end***");
+</script>
+
+</body>
+</html>
