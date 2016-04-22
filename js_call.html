@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>bind</title>
+</head>
+<body>
+<input type="text" id="myText" value = "input value">
+<script>
+    console.log("***以下为call方法的实例  start***");
+
+    console.log("***example1:***");
+    var value = "global value";
+    function Obj(){
+        this.value = "obj value"
+    }
+    function GetValue(){
+        console.log(this.value);
+    }
+    window.GetValue();
+    GetValue();
+    GetValue.call(window);
+    GetValue.call(new Obj());
+    GetValue.call(document.getElementById("myText"));
+
+    console.log("***example2:***");
+    var first_obj = {
+        num:12
+    }
+    var second_obj = {
+        num:23
+    }
+    function multiply(operation,mult){
+        var num = ""
+        switch (operation){
+            case "+":
+                num = this.num + mult;
+                break;
+            case "-":
+                num = this.num - mult;
+                break;
+            case "*":
+                num = this.num * mult;
+                break;
+            case "/":
+                num = this.num / mult;
+                break;
+        }
+        console.log(this.num +operation+mult+" = "+num);
+    }
+    multiply.call(first_obj,"+",3)
+    multiply.call(second_obj,"*",3)
+
+    console.log("***以下为call方法的实例  end***");
+
+</script>
+
+</body>
+</html>

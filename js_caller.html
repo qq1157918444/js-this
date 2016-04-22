@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>caller</title>
+</head>
+<body>
+<p>caller：返回一个对函数的引用，即调用了该函数的函数体</p>
+<p>对于函数来说，caller属性只有在函数执行时候才有定义，如果有程序顶层调用，caller为null，如果是有其它函数调用，caller为调用函数体</p>
+<script>
+    console.log("***以下为caller方法的实例  end***");
+    function InnerFun(){
+        console.log("caller:"+InnerFun.caller);
+        if(InnerFun.caller == null){
+            console.log("该函数是由顶层调用，不是由其它函数调用")
+        }else{
+            console.log("该函数是由其它函数调用，不是由顶层调用")
+        }
+    }
+    function OuterFun(){
+        console.log("OuterFun")
+        InnerFun()
+    }
+    InnerFun();
+    OuterFun();
+    console.log("***以下为caller方法的实例  end***");
+</script>
+</body>
+</html>

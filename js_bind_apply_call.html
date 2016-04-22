@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>bind&apply&call</title>
+</head>
+<body>
+<p>在js中，apply，call，bind三者都是用来改变函数的this对象的指向</p>
+<h4>相同点：</h4>
+<ul>
+    <li>都是用来改变函数的this的指向</li>
+    <li>第一个参数是this要指向的对象</li>
+    <li>利用后续的参数传参</li>
+</ul>
+<h4>不同点</h4>
+<ul>
+    <li>后续参数的用法不同</li>
+    <li>call和apply都是对函数的直接调用call(),apply()</li>
+    <li>bind返回的是函数需要再加上一个(),才能执行，bind()()</li>
+</ul>
+<script>
+    console.log("***example start***");
+
+    var person1 = {
+        name:"张三",
+        age:23,
+        say:function(){
+            console.log("我的名字是：",this.name+"；我的年龄是："+this.age);
+        },
+        say2:function(school,gender){
+            school = school ? school : "社会大学";
+            gender = gender ? gender : "男";
+            console.log("我的名字是：",this.name+"；我的年龄是："+this.age+";我的学校是："+school+";我的性别："+gender);
+        }
+    };
+    var person2 = {
+        name:"李四",
+        age:25
+    };
+    console.log("***直接调用say start***");
+    person1.say();
+    console.log("***直接调用say end***");
+
+    console.log("***apply调用say start***");
+    person1.say.apply(person2);
+    console.log("***apply调用say end***");
+
+    console.log("***call调用say start***");
+    person1.say.call(person2);
+    console.log("***call调用say end***");
+
+    console.log("***bind调用say start***");
+    person1.say.bind(person2)();
+    console.log("***bind调用say end***");
+
+    console.log("***带参数直接调用say start***");
+    person1.say2("哈佛1","男1");
+    console.log("***带参数直接调用say end***");
+
+    console.log("***带参数apply调用say start***");
+    person1.say2.apply(person2,["哈佛2","男2"]);
+    console.log("***带参数apply调用say end***");
+
+    console.log("***带参数call调用say start***");
+    person1.say2.call(person2,"哈佛3","男3");
+    console.log("***带参数call调用say end***");
+
+    console.log("***带参数bind调用say start***");
+    person1.say2.bind(person2,"哈佛4","男4")();
+    console.log("***带参数bind调用say end***");
+
+    console.log("***带参数bind调用say2 start***");
+    person1.say2.bind(person2)("哈佛5","男5");
+    console.log("***带参数bind调用say end***");
+
+
+    console.log("***example end***");
+</script>
+</body>
+</html>

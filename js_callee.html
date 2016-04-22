@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>callee</title>
+</head>
+<body>
+<p>callee:返回正在执行的Function对象</p>
+<script>
+    console.log("***callee start***");
+
+    console.log("callee可以打印函数本身")
+    function test1(){
+        console.log(arguments)
+        console.log(arguments.callee)
+    }
+    test1();
+
+    console.log("callee可以验证参数")
+    function test2(arg1,arg2){
+        if(arguments.length == arguments.callee.length){
+            console.log("形参和实参长度相等")
+        }else{
+            console.log("形参长度:"+arguments.length)
+            console.log("实参长度:"+arguments.callee.length)
+        }
+    }
+    test2(1,2);
+    test2(1,2,3);
+
+    console.log("递归计算");
+    function sum(n){
+        if(n <=0){
+            return 0;
+        }else{
+            return n + arguments.callee(n-1)
+        }
+    }
+    var _sum1 = sum(-1)//1
+    var _sum2 = sum(0)//1
+    var _sum3 = sum(1)//2
+    var _sum4 = sum(2)//4
+    var _sum5 = sum(3)//7
+    var _sum6 = sum(4)//11
+    console.log(_sum1)//1
+    console.log(_sum2)//1
+    console.log(_sum3)//2
+    console.log(_sum4)//4
+    console.log(_sum5)//7
+    console.log(_sum6)//11
+
+
+    console.log("***callee end***")
+</script>
+
+</body>
+</html>
